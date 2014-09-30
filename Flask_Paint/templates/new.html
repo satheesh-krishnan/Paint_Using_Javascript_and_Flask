@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>PAINT</title>
+
+
+</head>
+<body>
+
+<form action="" method="POST">
+<input id="new" type="button" style="height:50px;width:50px" value="New">
+<input id="pencil" type="button" style="height:50px;width:50px" value="pencil">
+<input id="erase" type="button" style="height:50px;width:50px" value="eraser">
+<input id="brush" type="button" style="height:50px;width:50px" value="brush">
+<input id="rect" type="button" style="height:50px;width:60px" value="rectangle">
+<input id="circle" type="button" style="height:50px;width:60px" value="circle">
+<input id="elipse" type="button" style="height:50px;width:60px" value="elipse">
+<input id="save" type="button" style="height:50px;width:60px" value="save">
+<input id="open" type="button" style="height:50px;width:60px" value="open">
+SELECT COLOR
+<input style="background-color:black" id="black" type="button" style="height:30px;width:30px;">
+<input style="background-color:red" id="red" type="button" style="height:30px;width:30px;">
+<input style="background-color:yellow" id="yellow" type="button" style="height:30px;width:30px;">
+<input style="background-color:pink" id="pink" type="button" style="height:30px;width:30px;">
+<input style="background-color:gray" id="gray" type="button" style="height:30px;width:30px;">
+<input style="background-color:white" id="white" type="button" style="height:30px;width:30px;">
+<input style="background-color:blue" id="blue" type="button" style="height:30px;width:30px;">
+<input style="background-color:brown" id="brown" type="button" style="height:30px;width:30px;">
+<input style="background-color:green" id="green" type="button" style="height:30px;width:30px;">
+<input style="background-color:violet" id="violet" type="button" style="height:30px;width:30px;">
+SELECT SIZE
+<input  id="one"   type="button" style="height:20px;width:2px;" value="1">
+<input  id="two"   type="button" style="height:20x;width:12px;" value="2">
+<input  id="three"   type="button" style="height:20px;width:20px;" value="3">
+<input  id="four"  type="button" style="height:20px;width:30px;" value="4">
+<input  id="five"  type="button" style="height:20px;width:40px;" value="5">
+
+
+
+<canvas id="a" width="1050" height="550" style="border:solid #000;" ></canvas>
+<script type="text/javascript" src={{url_for('static',filename="jquery/jquery.js")}}></script>
+
+<script type="text/javascript" language="javascript" src={{url_for('static',filename="hello.js")}}></script>
+</form>
+
+</body>
+</html>

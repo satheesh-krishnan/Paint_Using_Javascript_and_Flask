@@ -1,0 +1,318 @@
+var x
+var y
+var dx
+var dy
+var u=0
+var v=0
+var p=new Array()
+var zx
+var xx
+document.getElementById('new').onclick=function(){
+           cas=document.getElementById('a')
+           ctx=cas.getContext("2d")
+           ctx.clearRect(0,0,1050,550)
+}           
+document.getElementById('open').onclick=function(){
+            cas=document.getElementById('a')
+           ctx=cas.getContext("2d")
+           ctx.clearRect(0,0,1050,550)
+      
+            $.get('/gett',function(jd){
+         
+            var l=JSON.parse(jd)
+            zx=l
+            })
+            var popup=window.open('pop')
+            
+            popup.onload=function(){
+            for (each in zx){
+            var div=popup.document.createElement('div')
+            
+            div.innerHTML='<input style="background-color:white;height:20px;width:60px" type="submit" id='+zx[each]+ ' value='+zx[each]+'   > <br><br>'
+            popup.document.body.appendChild(div)
+          
+            xx=popup.document.getElementById(zx[each])
+            xx.onclick=function(){
+           
+            pl=JSON.stringify(this.value)
+               
+            $.get('/gtt',{js:pl},function(f){ 
+            f=JSON.parse(f)
+           
+            for (i in f){
+             
+             if(f[i][1]=='rectangle'){
+             rec(f[i][2],f[i][3],f[i][4],f[i][5],true,f[i][6],f[i][7])
+              rec(f[i][2],f[i][3],f[i][4],f[i][5],false,f[i][6],f[i][7])}
+             if(f[i][1]=='circle'){
+              cir(f[i][2],f[i][3],f[i][4],f[i][5],true,f[i][6],f[i][7])
+              cir(f[i][2],f[i][3],f[i][4],f[i][5],false,f[i][6],f[i][7])}
+             if(f[i][1]=='elipse'){
+               elip(f[i][2],f[i][3],f[i][4],f[i][5],true,f[i][6],f[i][7])
+               elip(f[i][2],f[i][3],f[i][4],f[i][5],false,f[i][6],f[i][7])}}})
+
+            popup.close()
+}
+}
+}
+}
+
+document.getElementById('save').onclick=function(){
+fn=prompt("enter filename")
+p.push(fn)
+p=JSON.stringify(p)
+$.post('/post',{json_str:p})
+alert('SAVED')
+}
+
+
+document.getElementById('elipse').onclick=function(){
+
+q=3
+a="#000"
+b=2
+colo(b,q)
+siz(a,q)
+move(a,b,q)
+}
+document.getElementById('circle').onclick=function(){
+
+
+
+q=2
+a="#000"
+b=2
+colo(b,q)
+siz(a,q)
+move(a,b,q)
+}
+document.getElementById('rect').onclick=function(){
+q=1
+a="#000"
+b=2
+colo(b,q)
+siz(a,q)
+move(a,b,q)
+}
+document.getElementById('brush').onclick=function(){
+
+a="#000"
+b=3
+q=0
+colo(b,q)
+siz(a,q)
+
+move(a,b,q)
+}
+
+
+document.getElementById('pencil').onclick=function(){
+q=0
+a="#000"
+b=1
+colo(b,q)
+siz(a,q)
+move(a,b,q)
+}
+function siz(a,q){
+document.getElementById('one').onclick=function(){move(a,1,q);colo(1,q)}
+document.getElementById('two').onclick=function(){move(a,2,q);colo(2,q)}
+document.getElementById('three').onclick=function(){move(a,3,q);colo(3,q)}
+document.getElementById('four').onclick=function(){move(a,4,q);colo(4,q)}
+document.getElementById('five').onclick=function(){move(a,5,q);colo(5,q)}
+}
+function colo(b,q){
+document.getElementById('red').onclick=function(){ move("#f00",b,q)}
+document.getElementById('black').onclick=function(){move("#000",b,q)}
+document.getElementById('white').onclick=function(){move("#fff",b,q)}
+document.getElementById('green').onclick=function(){move("#090",b,q)}
+document.getElementById('blue').onclick=function(){move("#06c",b,q)}
+document.getElementById('brown').onclick=function(){move("#300",b,q)}
+document.getElementById('yellow').onclick=function(){move("#ff0",b,q)}
+document.getElementById('pink').onclick=function(){move("#f39",b,q)}
+document.getElementById('gray').onclick=function(){move("#808080",b,q)}
+document.getElementById('violet').onclick=function(){move("#606",b,q)}
+
+}
+document.getElementById('erase').onclick=function(){
+b=3
+a="#fff"
+q=0
+move(a,b,q)
+}
+function move(a,b,q){
+var o=new Object()
+document.getElementById('a').onmousedown=function(e){
+    
+    x = e.pageX-this.offsetLeft;
+    y = e.pageY-this.offsetTop;
+    f=true
+        
+    document.getElementById('a').onmousemove=function(e){
+             
+        
+             mx=e.pageX-this.offsetLeft
+             my=e.pageY-this.offsetTop 
+             
+             if(q==0){
+                 draw(x,y,mx,my,f,a,b)
+                 x=mx
+                 y=my
+                 }
+             else if(q==1){rec(x,y,mx,my,f,a,b)}
+             else if(q==2){cir(x,y,mx,my,f,a,b)}
+             else if(q==3){elip(x,y,mx,my,f,a,b)}
+            }
+   document.getElementById('a').onmouseup=function(e){
+          f=false
+         
+          if(q==1){
+  
+                   o['shape']="rectangle"
+                   o['x']=x
+                   
+                   
+                   o['y']=y
+                   o['mx']=mx
+                   o['my']=my
+                   o['color']=a
+                   o['size']=b
+                 
+                   p.push(o)
+                   
+         }
+         if(q==2){
+                  o['shape']="circle"
+               
+                  o['x']=x
+                  o['y']=y
+                  o['mx']=mx
+                  o['my']=my
+                  o['color']=a
+                  o['size']=b
+                  p.push(o)
+          }
+         if(q==3){
+                  o['shape']="elipse"
+                  o['x']=x
+                  o['y']=y
+                  o['mx']=mx
+                  o['my']=my
+                  o['color']=a
+                  o['size']=b
+                  p.push(o)
+         }
+}
+
+}
+}
+function draw(x,y,mx,my,f,a,b){
+         cas=document.getElementById('a')
+         ctx=cas.getContext("2d")
+         ctx.strokeStyle=a
+         ctx.lineWidth=b
+         if (f){
+         ctx.beginPath()
+         ctx.moveTo(x,y)
+         ctx.lineTo(mx,my)
+         ctx.closePath()
+         ctx.stroke()  
+          }
+}
+
+function rec(x,y,mx,my,f,a,b){
+    
+         cas=document.getElementById('a')
+         ctx=cas.getContext("2d")
+         ctx.lineWidth=b
+         ctx.strokeStyle=a
+       
+         if(f){
+         if(u>0 && mx>u){ctx.clearRect(x,y,u-x,v-y)}
+         if(u>0 && mx<u){ctx.clearRect(x-5,y-5,u-x+10,v-y+10)}
+         ctx.beginPath()
+         ctx.strokeRect(x,y,mx-x,my-y)
+         ctx.closePath()
+         ctx.stroke()
+
+}
+u=mx
+v=my
+
+}
+function cir(x,y,mx,my,f,a,b){
+   
+         cas=document.getElementById('a')
+         ctx=cas.getContext("2d")
+      
+         
+         if(f){
+          
+         if(u>0 && mx>u){
+         ctx.beginPath()
+         ctx.fillStyle="#fff"
+         ctx.arc(x,y,Math.sqrt(((x-mx+2)*(x-mx+2))+((y-my+2)*(y-my+2))),0,3.14*2,false)
+         ctx.fill()
+         ctx.closePath()}
+         if(u>0 && mx<u){
+         ctx.beginPath()
+         ctx.fillStyle="#fff"
+         ctx.arc(x,y,Math.sqrt(((x-mx-10)*(x-mx-10))+((y-my-10)*(y-my-10))),0,3.14*2,false)
+         ctx.fill()
+         ctx.closePath()}
+       
+         ctx.beginPath()
+         ctx.lineWidth=b
+         ctx.strokeStyle=a
+         ctx.arc(x,y,Math.sqrt(((x-mx)*(x-mx))+((y-my)*(y-my))),0,3.14*2,false)
+         ctx.closePath()
+         ctx.stroke()
+     
+         
+}
+u=mx
+v=my
+
+} 
+function elip(x,y,mx,my,f,a,b){
+         cas=document.getElementById('a')
+         ctx=cas.getContext("2d")
+         h=y-my
+         w=x-mx
+         
+         if(f){
+         if(u>0 && mx>u){
+         u=x-u+2
+         v=y-v+2
+         ctx.fillStyle="#fff"
+         ctx.beginPath()
+         ctx.moveTo(x,y-v)
+         ctx.bezierCurveTo(x+u,y-v,x+u,y+v,x,y+v)
+         ctx.bezierCurveTo(x-u,y+v,x-u,y-v,x,y-v)
+         ctx.closePath()
+         ctx.fill()
+         }
+         if(u>0 && mx<u){
+         
+         u=x-u-15
+         v=y-v-15
+         ctx.fillStyle="#fff"
+         ctx.beginPath()
+         ctx.moveTo(x,y-v)
+         ctx.bezierCurveTo(x+u,y-v,x+u,y+v,x,y+v)
+         ctx.bezierCurveTo(x-u,y+v,x-u,y-v,x,y-v)
+         ctx.closePath()
+         ctx.fill()
+         }
+         ctx.lineWidth=b
+         ctx.strokeStyle=a
+         ctx.beginPath()
+         ctx.moveTo(x,y-h)
+         ctx.bezierCurveTo(x+w,y-h,x+w,y+h,x,y+h)
+         ctx.bezierCurveTo(x-w,y+h,x-w,y-h,x,y-h)
+         ctx.closePath()
+         ctx.stroke()
+}
+u=mx
+v=my
+}
